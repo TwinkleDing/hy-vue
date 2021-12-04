@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.Button;
@@ -19,13 +20,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_to_right);
         mButton = findViewById(R.id.start_learn);
-        mButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, LearnActivity.class);
-                startActivity(intent);
-            }
+        mButton.setOnClickListener(v -> {
+            Intent mainIntent = new Intent(MainActivity.this, LearnActivity.class);
+            startActivity(mainIntent);
         });
     }
 }
