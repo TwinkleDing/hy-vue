@@ -1,8 +1,8 @@
 Arguments: 
-  E:\Node\node.exe C:\Users\admin\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add vite-plugin-vconsole -D
+  E:\Node\node.exe C:\Users\admin\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add vite
 
 PATH: 
-  E:\Git\mingw64\bin;E:\Git\usr\bin;C:\Users\admin\bin;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0;C:\Windows\System32\OpenSSH;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;E:\Git\cmd;E:\Node;E:\flutter\bin;E:\flutter\bin\cache\dart-sdk;C:\Program Files\MySQL\MySQL Server 8.0\bin;D:\AndroidSDK\platform-tools;C:\Program Files\Java\jdk1.8.0_311\bin;C:\Program Files\Java\jdk1.8.0_311\jre\bin;.;C:\Users\admin\AppData\Local\Microsoft\WindowsApps;D:\Soft\Microsoft VS Code\bin;C:\Users\admin\AppData\Local\GitHubDesktop\bin;C:\Users\admin\AppData\Roaming\npm;D:\Soft\IntelliJ IDEA Community Edition 2021.1.1\bin;D:\AndroidSDK\platform-tools\tools;%ANDROID_HOME\platform-tools;D:\Soft\IntelliJ IDEA 2021.1.1\bin;D:\Soft\DevEco Studio 2.1.0.501\bin;E:\flutter\bin
+  E:\Git\mingw64\bin;E:\Git\usr\bin;C:\Users\admin\bin;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0;C:\Windows\System32\OpenSSH;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;E:\Git\cmd;E:\Node;E:\flutter\bin;E:\flutter\bin\cache\dart-sdk;C:\Program Files\MySQL\MySQL Server 8.0\bin;D:\AndroidSDK\platform-tools;C:\Program Files\Java\jdk1.8.0_311\bin;C:\Program Files\Java\jdk1.8.0_311\jre\bin;.;C:\Users\admin\AppData\Local\Microsoft\WindowsApps;D:\Soft\Microsoft VS Code\bin;C:\Users\admin\AppData\Local\GitHubDesktop\bin;C:\Users\admin\AppData\Roaming\npm;D:\Soft\IntelliJ IDEA Community Edition 2021.1.1\bin;D:\AndroidSDK\platform-tools\tools;%ANDROID_HOME\platform-tools;D:\Soft\IntelliJ IDEA 2021.1.1\bin;D:\Soft\DevEco Studio 2.1.0.501\bin
 
 Yarn version: 
   1.22.17
@@ -14,7 +14,12 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: EPERM: operation not permitted, unlink 'E:\Code\Android\vue-hy\hy-app\node_modules\esbuild\esbuild.exe'
+  SyntaxError: E:\Code\Android\vue-hy\hy-app\package.json: Unexpected token } in JSON at position 391
+      at JSON.parse (<anonymous>)
+      at C:\Users\admin\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:1625:59
+      at Generator.next (<anonymous>)
+      at step (C:\Users\admin\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:310:30)
+      at C:\Users\admin\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:321:13
 
 npm manifest: 
   {
@@ -25,13 +30,16 @@ npm manifest:
       "build": "vite build"
     },
     "dependencies": {
+      "@vitejs/plugin-vue": "^1.10.1",
+      "vconsole": "^3.9.5",
       "vue": "^3.0.4"
     },
     "devDependencies": {
-      "vite": "^1.0.0-rc.13",
       "@vue/compiler-sfc": "^3.0.4",
       "eslint": "^7.32.0",
-      "eslint-plugin-vue": "^7.18.0"
+      "eslint-plugin-vue": "^7.18.0",
+      "sass": "^1.44.0",
+      "sass-loader": "^12.3.0",
     },
     "license": "MIT"
   }

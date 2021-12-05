@@ -7,7 +7,9 @@ import android.util.Log;
 import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import androidx.annotation.NonNull;
 
@@ -49,7 +51,10 @@ public class LearnActivity extends CommonActivity {
         mWebView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
         mWebView.getSettings().setDatabasePath(LearnActivity.this.getApplicationContext().getCacheDir().getAbsolutePath());
         mWebView.addJavascriptInterface(LearnActivity.this, "androidObject");
-        mWebView.loadUrl("http://192.168.31.180:3000");
+//        mWebView.loadUrl("http://192.168.31.180:3000");
+        mWebView.getSettings().setAllowFileAccessFromFileURLs(true);
+
+        mWebView.loadUrl("file:///android_asset/index.html");
     }
 
     /**
@@ -59,7 +64,6 @@ public class LearnActivity extends CommonActivity {
      */
     @JavascriptInterface
     public String getOrientation() {
-        Log.i("jjj", "js嗲用了android");
         return mOrientation;
     }
 }
