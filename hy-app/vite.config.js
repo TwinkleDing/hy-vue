@@ -16,8 +16,8 @@ export default ( {
         plugins: [ vue() ], //查看 插件 API 获取 Vite 插件的更多细节 https://www.vitejs.net/guide/api-plugin.html
         resolve: {
             alias: {
-                "@": resolve( __dirname, "./src" ), // 设置为@ 则使用时为 "@/components/index.module.css"
-                "@components": resolve( __dirname, "./src/components" ), // 使用时为 "@components/HelloWorld.vue"
+                "@": resolve( __dirname, "./src" ),
+                "@components": resolve( __dirname, "./src/components" ),
             },
         },
         server: {
@@ -44,6 +44,7 @@ export default ( {
         },
         build: {
             assetsDir: "static", // 指定生成静态资源的存放路径（相对于 build.outDir）
+            outDir: "../app/assets"
         }
     } );
 };

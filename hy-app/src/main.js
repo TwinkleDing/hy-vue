@@ -4,7 +4,7 @@ import {
 import App from "./App.vue";
 import "./css/index.css";
 import "./utils/webview.js";
-import Vconsole from "vconsole";
-new Vconsole();
+import Vant from "vant";
+import "vant/lib/index.css";
 
-createApp( App ).mount( "#app" );
+createApp( App ).use( Vant ).mount( "#app" );

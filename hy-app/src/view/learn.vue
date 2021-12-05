@@ -1,7 +1,9 @@
 <template>
     <div class="learn"
         :class="[getOrientation =='portrait' ? 'learn-portrait' : 'learn-landscape' ]">
-        <div class="learn-show">zuo</div>
+        <div class="learn-show">
+            <van-button type="primary" round>主要按钮</van-button>
+        </div>
         <div class="learn-set">you</div>
     </div>
 </template>
