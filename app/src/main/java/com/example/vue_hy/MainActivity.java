@@ -10,9 +10,10 @@ import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.vue_hy.common.CommonActivity;
 import com.example.vue_hy.page.LearnActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends CommonActivity {
 
     private Button mButton;
 

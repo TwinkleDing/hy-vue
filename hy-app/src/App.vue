@@ -1,13 +1,14 @@
 <template>
-    <div>assas</div>
+    <Learn />
 </template>
 
 <script>
 
+import learn from "./view/learn.vue";
 export default {
     name: "App",
     components: {
-        HelloWorld,
-    },
+        Learn: learn
+    }
 };
 </script>
