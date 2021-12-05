@@ -1,20 +1,28 @@
 package com.example.vue_hy.page;
 
 import android.annotation.SuppressLint;
-import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
+import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
 import android.webkit.WebView;
+
+import androidx.annotation.NonNull;
 
 import com.example.vue_hy.R;
 import com.example.vue_hy.common.CommonActivity;
 
 public class LearnActivity extends CommonActivity {
+
+    private final static String LANDSCAPE = "landscape";
+
+    private final static String PORTRAIT = "portrait";
+
     private WebView mWebView;
+
+    private String mOrientation;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -22,13 +30,16 @@ public class LearnActivity extends CommonActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_learn);
         overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
-        getWindow().getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+
+        Configuration configuration = this.getResources().getConfiguration(); //获取设置的配置信息
+        int ori = configuration.orientation; //获取屏幕方向
+        if (ori == Configuration.ORIENTATION_LANDSCAPE) {
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            mOrientation = LANDSCAPE;
+        } else if (ori == Configuration.ORIENTATION_PORTRAIT) {
+            mOrientation = PORTRAIT;
+        }
 
         mWebView = findViewById(R.id.webView);
         mWebView.getSettings().setJavaScriptEnabled(true);
@@ -41,16 +52,14 @@ public class LearnActivity extends CommonActivity {
         mWebView.loadUrl("http://192.168.31.180:3000");
     }
 
+    /**
+     * 发送给js的事件，js得主动接收并且去调用
+     *
+     * @return 屏幕方向
+     */
     @JavascriptInterface
     public String getOrientation() {
-        String orientation = "ss";
-        Configuration mConfiguration = this.getResources().getConfiguration(); //获取设置的配置信息
-        int ori = mConfiguration.orientation; //获取屏幕方向
-        if (ori == Configuration.ORIENTATION_LANDSCAPE) {
-            orientation = "landscape";
-        } else if (ori == Configuration.ORIENTATION_PORTRAIT) {
-            orientation = "portrait";
-        }
-        return orientation;
+        Log.i("jjj", "js嗲用了android");
+        return mOrientation;
     }
 }
