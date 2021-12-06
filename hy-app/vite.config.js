@@ -43,8 +43,7 @@ export default ( {
             }
         },
         build: {
-            assetsDir: "static", // 指定生成静态资源的存放路径（相对于 build.outDir）
-            outDir: "../app/assets"
+            assetsDir: "static" // 指定生成静态资源的存放路径（相对于 build.outDir）
         }
     } );
 };

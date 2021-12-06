@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "vite build"
+    "build": "vite build",
+    "buildAndroid": "vite build --outDir=../app/assets/"
   },
   "dependencies": {
     "@vitejs/plugin-vue": "^1.10.1",
