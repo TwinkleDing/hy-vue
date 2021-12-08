@@ -6,7 +6,14 @@
         ]"
     >
         <div ref="learnShow" class="learn-show">
-            <van-button type="primary" round>主要按钮</van-button>
+            <van-button
+                type="primary"
+                class="div-center"
+                round
+                @touchstart="divStart"
+                @touchmove="divMove"
+                >主要按钮</van-button
+            >
         </div>
         <span
             ref="learnLine"
@@ -19,13 +26,13 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import { orientation } from "../utils/webview";
 import { PORTRAIT } from "../utils/common";
 export default defineComponent({
-    setup(props) {
+    setup() {
         const getOrientation = orientation;
-        console.log(getOrientation, 16);
+
         return {
             getOrientation,
         };
@@ -35,6 +42,8 @@ export default defineComponent({
             showSize: 0,
             setSize: 0,
             lineSize: 0,
+            divX: 0,
+            divY: 0,
         };
     },
     methods: {
@@ -64,6 +73,28 @@ export default defineComponent({
                     this.setSize - (y - this.lineSize) + "px";
             }
         },
+        divStart(e) {
+            this.divX = e.targetTouches[0].clientX - e.target.offsetLeft;
+            this.divY = e.targetTouches[0].clientY - e.target.offsetTop;
+        },
+        divMove(e) {
+            let x = e.targetTouches[0].clientX - this.divX;
+            let y = e.targetTouches[0].clientY - this.divY;
+            if (
+                x > 0 &&
+                x + e.target.clientWidth < this.$refs.learnShow.offsetWidth
+            ) {
+                e.target.style.left =
+                    e.targetTouches[0].clientX - this.divX + "px";
+            }
+            if (
+                y > 0 &&
+                y + e.target.clientHeight < this.$refs.learnShow.offsetHeight
+            ) {
+                e.target.style.top =
+                    e.targetTouches[0].clientY - this.divY + "px";
+            }
+        },
     },
 });
 </script>
@@ -78,6 +109,7 @@ export default defineComponent({
     & > div {
         width: 100%;
         height: 100%;
+        overflow: hidden;
     }
     &-portrait {
         flex-direction: column;

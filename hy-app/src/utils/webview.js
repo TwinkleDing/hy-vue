@@ -3,7 +3,7 @@ import {
     LANDSCAPE
 } from "./common";
 
-export let orientation = LANDSCAPE;
+export let orientation = PORTRAIT;
 if ( window.androidObject ) {
     orientation = window.androidObject.getOrientation() ? window.androidObject.getOrientation() : PORTRAIT;
 } else {

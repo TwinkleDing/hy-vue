@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "buildAndroid": "vite build --outDir=../app/src/main/assets/"
+    "buildAndroid": "vite build --outDir=../app/src/main/assets/ --emptyOutDir"
   },
   "dependencies": {
     "@vitejs/plugin-vue": "^1.10.1",
