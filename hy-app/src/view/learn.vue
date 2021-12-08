@@ -8,7 +8,6 @@
         <div ref="learnShow" class="learn-show">
             <van-button
                 type="primary"
-                class="div-center"
                 round
                 @touchstart="divStart"
                 @touchmove="divMove"
@@ -84,15 +83,13 @@ export default defineComponent({
                 x > 0 &&
                 x + e.target.clientWidth < this.$refs.learnShow.offsetWidth
             ) {
-                e.target.style.left =
-                    e.targetTouches[0].clientX - this.divX + "px";
+                e.target.style.left = x + "px";
             }
             if (
                 y > 0 &&
                 y + e.target.clientHeight < this.$refs.learnShow.offsetHeight
             ) {
-                e.target.style.top =
-                    e.targetTouches[0].clientY - this.divY + "px";
+                e.target.style.top = y + "px";
             }
         },
     },
