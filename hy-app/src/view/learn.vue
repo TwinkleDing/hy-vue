@@ -7,11 +7,12 @@
     >
         <div ref="learnShow" class="learn-show">
             <van-button
+                ref="showButton"
                 type="primary"
                 round
                 @touchstart="divStart"
                 @touchmove="divMove"
-                >主要按钮</van-button
+                >展示按钮</van-button
             >
         </div>
         <span
@@ -20,7 +21,23 @@
             @touchstart="lineStart"
             @touchmove="lineMove"
         ></span>
-        <div ref="learnSet" class="learn-set">you</div>
+        <div ref="learnSet" class="learn-set">
+            <van-popover
+                v-model:show="showPopover"
+                :actions="actions"
+                @select="onSelect"
+            >
+                <template #reference>
+                    <van-button
+                        ref="border"
+                        type="primary"
+                        round
+                        @dblclick="buttonSet('border')"
+                        >border</van-button
+                    >
+                </template>
+            </van-popover>
+        </div>
     </div>
 </template>
 
@@ -28,12 +45,26 @@
 import { defineComponent, ref } from "vue";
 import { orientation } from "../utils/webview";
 import { PORTRAIT } from "../utils/common";
+import { Toast } from "vant";
+
 export default defineComponent({
     setup() {
         const getOrientation = orientation;
+        const showPopover = ref(false);
+
+        // 通过 actions 属性来定义菜单选项
+        const actions = [
+            { text: "border-width" },
+            { text: "border-style" },
+            { text: "border-color" },
+        ];
+        const onSelect = (action) => Toast(action.text);
 
         return {
             getOrientation,
+            actions,
+            showPopover,
+            onSelect,
         };
     },
     data() {
@@ -92,6 +123,16 @@ export default defineComponent({
                 e.target.style.top = y + "px";
             }
         },
+        buttonSet(ele) {
+            switch (ele) {
+                case "border":
+                    this.$refs.showButton.$el.style.border = "1px solid #f00";
+                    break;
+
+                default:
+                    break;
+            }
+        },
     },
 });
 </script>
@@ -114,6 +155,8 @@ export default defineComponent({
             min-height: 200px;
         }
         .learn-set {
+            box-sizing: border-box;
+            padding: 20px;
             min-height: 200px;
         }
         .learn-line {
