@@ -4,7 +4,7 @@
 
 <script>
 
-import learn from "./view/learn.vue";
+import learn from "./views/learn/index.vue";
 export default {
     name: "App",
     components: {

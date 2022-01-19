@@ -1,3 +1,4 @@
+
 <template>
     <div
         class="learn"
@@ -22,50 +23,26 @@
             @touchmove="lineMove"
         ></span>
         <div ref="learnSet" class="learn-set">
-            <van-popover
-                v-model:show="showPopover"
-                :actions="actions"
-                @select="onSelect"
-            >
-                <template #reference>
-                    <van-button
-                        ref="border"
-                        type="primary"
-                        round
-                        @dblclick="buttonSet('border')"
-                        >border</van-button
-                    >
-                </template>
-            </van-popover>
+            <set-box attr="border" />
         </div>
     </div>
 </template>
 
 <script>
-import { defineComponent, ref } from "vue";
-import { orientation } from "../utils/webview";
-import { PORTRAIT } from "../utils/common";
-import { Toast } from "vant";
+import { defineComponent } from "vue";
+import { orientation } from "@/utils/webview";
+import { PORTRAIT } from "@/utils/common";
+import setBox from "@components/SetBox.vue";
 
 export default defineComponent({
+    components: {
+        SetBox: setBox,
+    },
     setup() {
         const getOrientation = orientation;
-        const showPopover = ref(false);
-
-        // 通过 actions 属性来定义菜单选项
-        const actions = [
-            { text: "border-width" },
-            { text: "border-style" },
-            { text: "border-color" },
-            { text: "border-radius" },
-        ];
-        const onSelect = (action) => Toast(action.text);
 
         return {
             getOrientation,
-            actions,
-            showPopover,
-            onSelect,
         };
     },
     data() {
@@ -122,16 +99,6 @@ export default defineComponent({
                 y + e.target.clientHeight < this.$refs.learnShow.offsetHeight
             ) {
                 e.target.style.top = y + "px";
-            }
-        },
-        buttonSet(ele) {
-            switch (ele) {
-                case "border":
-                    this.$refs.showButton.$el.style.border = "1px solid #f00";
-                    break;
-
-                default:
-                    break;
             }
         },
     },
