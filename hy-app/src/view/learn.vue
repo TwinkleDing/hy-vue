@@ -57,6 +57,7 @@ export default defineComponent({
             { text: "border-width" },
             { text: "border-style" },
             { text: "border-color" },
+            { text: "border-radius" },
         ];
         const onSelect = (action) => Toast(action.text);
 
