@@ -2,7 +2,7 @@
  * @Author       : Twinkle Ding
  * @Date         : 2022-01-19 20:37:32
  * @LastEditors  : Twinkle Ding
- * @LastEditTime : 2022-01-19 22:59:02
+ * @LastEditTime : 2022-01-22 19:12:46
  * @FilePath     : \hy-app\src\Components\SetBox.vue
 -->
 <template>
@@ -29,6 +29,7 @@
 <script>
 import { defineComponent, ref } from "vue";
 import { Toast } from "vant";
+import attrList from "@/utils/attrList.js";
 
 export default defineComponent({
     props: {
@@ -38,14 +39,15 @@ export default defineComponent({
         },
         targetEle: {
             require: true,
-            type: () => Object,
+            type: null || Object,
         },
     },
     setup(props) {
-        console.log(props.attr);
         const showPopover = ref(false);
 
         // 通过 actions 属性来定义菜单选项
+        const as = attrList[props.attr];
+        console.log(as)
         const actions = [
             { text: "border-width" },
             { text: "border-style" },
