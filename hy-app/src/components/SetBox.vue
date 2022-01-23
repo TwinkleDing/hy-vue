@@ -20,9 +20,11 @@
             </template>
         </van-popover>
     </div>
-    <div class="set-box-slider" v-show="showValueSlider">
-        <van-slider v-model="sliderValue" @change="sliderChange" />
-    </div>
+    <transition name="van-fade">
+        <div class="set-box-slider" v-show="showValueSlider">
+            <van-slider v-model="sliderValue" @change="sliderChange" />
+        </div>
+    </transition>
 </template>
 
 <script>
@@ -41,10 +43,10 @@ export default defineComponent({
         },
     },
     setup(props) {
-        let showPopover = ref(false);
+        const showPopover = ref(false);
+        const sliderValue = ref(0);
         let touchStartTime = ref(null);
         let showValueSlider = ref(false);
-        let sliderValue = ref(0);
 
         // 通过 actions 属性来定义菜单选项
         const attr = attrList[props.attr];
@@ -61,7 +63,7 @@ export default defineComponent({
             touchStartTime = setTimeout(() => {
                 console.log(1);
                 showValueSlider = true;
-            }, 100);
+            }, 500);
         };
         const changeValue = (e) => {
             console.log(e);
@@ -76,15 +78,15 @@ export default defineComponent({
         };
 
         return {
-            actions,
             showPopover,
+            actions,
+            showValueSlider,
+            sliderValue,
             onSelect,
             showValue,
             changeValue,
             hideValue,
             sliderChange,
-            showValueSlider,
-            sliderValue,
         };
     },
     data() {
