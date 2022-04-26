@@ -22,94 +22,101 @@
             @touchmove="lineMove"
         ></span>
         <div ref="learnSet" class="learn-set">
-            <set-box attr="border" :targetEle="targetEle" />
+            <set-box v-for="(item, index) in list" :attr="item" :key="index" />
         </div>
     </div>
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import {
+    defineComponent,
+    getCurrentInstance,
+    ref,
+    onMounted,
+    reactive,
+} from "vue";
 import { orientation } from "@/utils/webview";
 import { PORTRAIT } from "@/utils/common";
 import SetBox from "@components/SetBox.vue";
+import attrList from "@/utils/attrList.js";
+import useStore from "@/store/index.js";
 
 export default defineComponent({
     components: {
         SetBox,
     },
     setup() {
+        const { proxy } = getCurrentInstance();
         const getOrientation = orientation;
+        const store = useStore();
 
-        return {
-            getOrientation,
+        const showSize = ref(0);
+        const setSize = ref(0);
+        const lineSize = ref(0);
+        const divX = ref(0);
+        const divY = ref(0);
+        const targetEle = ref(null);
+        const list = reactive(attrList);
+
+        const divStart = (e) => {
+            divX.value = e.targetTouches[0].clientX - e.target.offsetLeft;
+            divY.value = e.targetTouches[0].clientY - e.target.offsetTop;
         };
-    },
-    data() {
-        return {
-            showSize: 0,
-            setSize: 0,
-            lineSize: 0,
-            divX: 0,
-            divY: 0,
-            targetEle: null,
-        };
-    },
-    mounted() {
-        console.log(this.$refs.showButton)
-        this.targetEle = this.$refs.showButton;
-    },
-    watch: {
-        targetEle: {
-            immediate: true,
-        }
-    },
-    methods: {
-        divStart(e) {
-            this.divX = e.targetTouches[0].clientX - e.target.offsetLeft;
-            this.divY = e.targetTouches[0].clientY - e.target.offsetTop;
-        },
-        divMove(e) {
-            let x = e.targetTouches[0].clientX - this.divX;
-            let y = e.targetTouches[0].clientY - this.divY;
+        const divMove = (e) => {
+            let x = e.targetTouches[0].clientX - divX.value;
+            let y = e.targetTouches[0].clientY - divY.value;
             if (
                 x > 0 &&
-                x + e.target.clientWidth < this.$refs.learnShow.offsetWidth
+                x + e.target.clientWidth < proxy.$refs.learnShow.offsetWidth
             ) {
                 e.target.style.left = x + "px";
             }
             if (
                 y > 0 &&
-                y + e.target.clientHeight < this.$refs.learnShow.offsetHeight
+                y + e.target.clientHeight < proxy.$refs.learnShow.offsetHeight
             ) {
                 e.target.style.top = y + "px";
             }
-        },
-        lineStart(e) {
-            if (this.getOrientation === PORTRAIT) {
-                this.showSize = this.$refs.learnShow.clientHeight;
-                this.setSize = this.$refs.learnSet.clientHeight;
-                this.lineSize = e.targetTouches[0].clientY;
+        };
+        const lineStart = (e) => {
+            if (getOrientation === PORTRAIT) {
+                showSize.value = proxy.$refs.learnShow.clientHeight;
+                setSize.value = proxy.$refs.learnSet.clientHeight;
+                lineSize.value = e.targetTouches[0].clientY;
             } else {
-                this.showSize = this.$refs.learnShow.clientWidth;
-                this.setSize = this.$refs.learnSet.clientWidth;
-                this.lineSize = e.targetTouches[0].clientX;
+                showSize.value = proxy.$refs.learnShow.clientWidth;
+                setSize.value = proxy.$refs.learnSet.clientWidth;
+                lineSize.value = e.targetTouches[0].clientX;
             }
-        },
-        lineMove(e) {
-            if (this.getOrientation === PORTRAIT) {
+        };
+        const lineMove = (e) => {
+            if (getOrientation === PORTRAIT) {
                 let y = e.targetTouches[0].clientY;
-                this.$refs.learnShow.style.height =
-                    this.showSize + (y - this.lineSize) + "px";
-                this.$refs.learnSet.style.height =
-                    this.setSize - (y - this.lineSize) + "px";
+                proxy.$refs.learnShow.style.height =
+                    showSize.value + (y - lineSize.value) + "px";
+                proxy.$refs.learnSet.style.height =
+                    setSize.value - (y - lineSize.value) + "px";
             } else {
                 let y = e.targetTouches[0].clientX;
-                this.$refs.learnShow.style.width =
-                    this.showSize + (y - this.lineSize) + "px";
-                this.$refs.learnSet.style.width =
-                    this.setSize - (y - this.lineSize) + "px";
+                proxy.$refs.learnShow.style.width =
+                    showSize.value + (y - lineSize.value) + "px";
+                proxy.$refs.learnSet.style.width =
+                    setSize.value - (y - lineSize.value) + "px";
             }
-        },
+        };
+
+        onMounted(() => {
+            targetEle.value = proxy.$refs.showButton;
+            store.setShowButton(targetEle);
+        });
+        return {
+            getOrientation,
+            divStart,
+            divMove,
+            lineStart,
+            lineMove,
+            list,
+        };
     },
 });
 </script>

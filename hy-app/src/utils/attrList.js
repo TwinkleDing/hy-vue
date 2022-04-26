@@ -1,30 +1,53 @@
-const attrList = {
-    border: {
+const attrList = [
+    {
         name: "border",
-        value: "2px solid #f00",
-        children: {
-            borderWidth: {
+        desc: "边框",
+        children: [
+            {
                 name: "borderWidth",
-                value: "5px",
-                text: "border-width"
+                preset: ["0", "1px", "2px", "3px", "4px", "5px"],
+                value: 0,
+                text: "border-width",
             },
-            borderStyle: {
+            {
                 name: "borderStyle",
-                value: "solid",
-                text: "border-style"
+                preset: [
+                    "dashed",
+                    "dotted",
+                    "solid",
+                    "double",
+                    "groove",
+                    "ridge",
+                    "inset",
+                    "outset",
+                    "none",
+                ],
+                value: 0,
+                text: "border-style",
             },
-            borderColor: {
+            {
                 name: "borderColor",
-                value: "#f00",
-                text: "border-color"
+                preset: [
+                    "#000",
+                    "#00f",
+                    "#0f0",
+                    "#0ff",
+                    "#f00",
+                    "#f0f",
+                    "#ff0",
+                    "#fff",
+                ],
+                value: 0,
+                text: "border-color",
             },
-            borderRadius: {
+            {
                 name: "borderRadius",
-                value: "",
-                text: "border-radius"
-            }
-        }
-    }
-}
+                preset: ["0", "10%", "20%", "30%", "40%", "50%"],
+                value: 0,
+                text: "border-radius",
+            },
+        ],
+    },
+];
 
 export default attrList;

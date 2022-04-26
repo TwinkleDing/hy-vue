@@ -1,132 +1,135 @@
 <template>
-    <div>
-        <van-popover
-            v-model:show="showPopover"
-            :actions="actions"
-            @select="onSelect"
-            @touchstart="showValue"
-            @touchmove="changeValue"
-            @touchend="hideValue"
+    <div class="set-box">
+        <div
+            :style="{ backgroundColor: color }"
+            :class="['title', unfold ? 'title-unfold' : '']"
+            @click="titleClick"
         >
-            <template #reference>
-                <van-button
-                    ref="border"
-                    type="primary"
-                    round
-                    @touchstart="touchStart"
-                    @touchend="touchEnd"
-                    >{{ attr }}</van-button
-                >
-            </template>
-        </van-popover>
-    </div>
-    <transition name="van-fade">
-        <div class="set-box-slider" v-show="showValueSlider">
-            <van-slider v-model="sliderValue" @change="sliderChange" />
+            <span>{{ box.name }}</span>
+            <span v-if="unfold">{{ box.desc }}</span>
         </div>
-    </transition>
+        <div :class="['content', unfold ? 'content-unfold' : '']">
+            <div
+                v-for="(item, index) in box.children"
+                :key="index"
+                class="content-item"
+            >
+                <div>{{ item.text }}</div>
+                <div class="item-slider">
+                    <van-slider
+                        :min="0"
+                        :step="1"
+                        :max="item.preset.length - 1"
+                        v-model="item.value"
+                        @change="onChange(item)"
+                    >
+                        <template #button>
+                            <div class="custom-button">
+                                {{ item.preset[item.value] }}
+                            </div>
+                        </template>
+                    </van-slider>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
-import { defineComponent, ref } from "vue";
-import attrList from "@/utils/attrList.js";
-
+import { defineComponent, ref, onMounted, reactive } from "vue";
+import useStore from "@/store/index.js";
+import { themeColor } from "@/utils/webview";
 export default defineComponent({
-    props: {
-        attr: {
-            require: true,
-            type: String,
-        },
-        targetEle: {
-            require: true,
-            type: null || Object,
-        },
-    },
+    props: ["attr"],
     setup(props) {
-        const showPopover = ref(false);
-        const sliderValue = ref(0);
-        let touchStartTime = ref(null);
-        let showValueSlider = ref(false);
-
-        // 通过 actions 属性来定义菜单选项
-        const attr = attrList[props.attr];
-        const actions = [];
-        for (const key in attr.children) {
-            if (Object.hasOwnProperty.call(attr.children, key)) {
-                actions.push(attr.children[key]);
-            }
-        }
-        const onSelect = (action) => {
-            console.log(action);
+        const store = useStore();
+        const box = reactive(props.attr);
+        const unfold = ref(false);
+        const value = ref(0);
+        const color = themeColor;
+        const titleClick = () => {
+            unfold.value = !unfold.value;
+            console.log(unfold);
         };
-        const showValue = () => {
-            touchStartTime = setTimeout(() => {
-                console.log(1);
-                showValueSlider = true;
-            }, 500);
+        const onChange = (item) => {
+            store.changeShowButton(item.name, item.preset[item.value]);
         };
-        const changeValue = (e) => {
-            console.log(e);
-        };
-        const hideValue = (e) => {
-            clearTimeout(touchStartTime);
-            touchStartTime = null;
-        };
-
-        const sliderChange = (value) => {
-            console.log(value);
-        };
-
+        onMounted(() => {
+            // setTimeout(() => {
+            // console.log(store.showButton.$el.style);
+            // }, 0);
+        });
         return {
-            showPopover,
-            actions,
-            showValueSlider,
-            sliderValue,
-            onSelect,
-            showValue,
-            changeValue,
-            hideValue,
-            sliderChange,
+            box,
+            unfold,
+            value,
+            color,
+            onChange,
+            titleClick,
         };
-    },
-    data() {
-        return {
-            touchTime: 0,
-        };
-    },
-    methods: {
-        buttonSet(ele) {
-            switch (ele) {
-                case "border":
-                    this.targetEle.$el.style.border = "1px solid #f00";
-                    break;
-
-                default:
-                    break;
-            }
-        },
-        touchStart() {
-            this.touchStartTime = new Date().getTime();
-        },
-        touchEnd() {
-            let touchEndTime = new Date().getTime();
-            if (touchEndTime - this.touchStartTime > 500) {
-                this.buttonSet(this.attr);
-            }
-        },
     },
 });
+// const style = this.targetEle.$el.style;
 </script>
 
 <style lang="scss" scoped>
-.set-box-slider {
-    position: fixed;
-    background: rgba($color: #000000, $alpha: 0.5);
-    width: 80%;
-    padding-top: 30px;
-    height: 30px;
-    top: 50%;
-    left: 50%;
-    transform: translateX(-50%);
+.set-box {
+    width: 100%;
+    font-size: 0;
+    display: flex;
+    .title {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        padding: 10px;
+        border-radius: 6px;
+        background: #cccccc88;
+        transition: 0.5s;
+        font-size: 16px;
+        color: #fff;
+    }
+    .title-unfold {
+        flex-direction: column;
+        justify-content: center;
+        border-radius: 6px 0 0 6px;
+        width: 60px;
+        min-height: 100px;
+        transition: 0.5s;
+    }
+    .content {
+        display: none;
+        font-size: 14px;
+        overflow: hidden;
+        flex: 1;
+        color: var(--van-white);
+        background: var(--van-primary-color);
+        padding: 10px;
+        &-item {
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+            .item-slider {
+                padding: 0 10px;
+                flex: 1;
+            }
+            .custom-button {
+                min-width: 15px;
+                padding: 0 4px;
+                color: #fff;
+                font-size: 10px;
+                line-height: 18px;
+                text-align: center;
+                background-color: var(--van-success-color);
+                border-radius: 30%;
+            }
+        }
+    }
+    .content-unfold {
+        border-radius: 0 6px 6px 0;
+        white-space: nowrap;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
 }
 </style>
