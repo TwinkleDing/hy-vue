@@ -51,7 +51,7 @@ public class LearnActivity extends CommonActivity {
         mWebView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
         mWebView.getSettings().setDatabasePath(LearnActivity.this.getApplicationContext().getCacheDir().getAbsolutePath());
         mWebView.addJavascriptInterface(LearnActivity.this, "androidObject");
-//        mWebView.loadUrl("http://192.168.31.180:3000");
+//        mWebView.loadUrl("http://10.168.2.237:8006");
         mWebView.getSettings().setAllowFileAccessFromFileURLs(true);
 
         mWebView.loadUrl("file:///android_asset/index.html");
@@ -65,5 +65,14 @@ public class LearnActivity extends CommonActivity {
     @JavascriptInterface
     public String getOrientation() {
         return mOrientation;
+    }
+    /**
+     * 发送给js的事件，js得主动接收并且去调用
+     *
+     * @return 屏幕方向
+     */
+    @JavascriptInterface
+    public String themeColor() {
+        return getResources().getString(R.color.purple_700);
     }
 }
