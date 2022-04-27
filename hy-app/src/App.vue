@@ -25,7 +25,7 @@ export default {
         const store = useStore();
         const router = useRouter();
         const isShow = ref(false);
-        if (store.routerPage === BASE_CSS) {
+        if (store.routerPage === BASE_CSS || !store.isAndroid) {
             router.push("/baseCss");
             isShow.value = true;
         }

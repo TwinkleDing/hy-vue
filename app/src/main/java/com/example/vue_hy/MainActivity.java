@@ -32,5 +32,4 @@ public class MainActivity extends CommonActivity {
             startActivity(mainIntent);
         });
     }
-
 }

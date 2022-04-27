@@ -11,7 +11,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Vuehy"
         android:networkSecurityConfig="@xml/network_security_config"
-        android:configChanges="orientation|navigation|keyboardHidden"
         android:usesCleartextTraffic="true">
         <activity
             android:name=".MainActivity"
@@ -23,6 +22,7 @@
             </intent-filter>
         </activity>
         <activity
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:name=".page.LearnActivity"
             android:label="学习"
             android:theme="@style/Theme.NoTitle"
