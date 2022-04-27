@@ -6,30 +6,48 @@
             @click="titleClick"
         >
             <span>{{ box.name }}</span>
-            <span v-if="unfold">{{ box.desc }}</span>
+            <van-icon v-if="!unfold" name="arrow" />
+            <span v-if="unfold">{{ box.zh }}</span>
         </div>
-        <div :class="['content', unfold ? 'content-unfold' : '']">
-            <div
-                v-for="(item, index) in box.children"
-                :key="index"
-                class="content-item"
-            >
-                <div>{{ item.text }}</div>
-                <div class="item-slider">
-                    <van-slider
-                        :min="0"
-                        :step="1"
-                        :max="item.preset.length - 1"
-                        v-model="item.value"
-                        @change="onChange(item)"
+        <div :class="['right', unfold ? 'right-unfold' : '']">
+            <div class="content">
+                <template v-for="(item, index) in box.children" :key="index">
+                    <div class="content-item">
+                        <div>{{ item.text }}</div>
+                        <div class="item-slider">
+                            <van-slider
+                                :min="0"
+                                :step="1"
+                                :max="item.preset.length - 1"
+                                v-model="item.value"
+                                active-color="#6200ee"
+                                @update:model-value="onChange(item)"
+                            >
+                                <template #button>
+                                    <div class="custom-button">
+                                        {{ item.preset[item.value] }}
+                                    </div>
+                                </template>
+                            </van-slider>
+                        </div>
+                    </div>
+                    <div
+                        v-if="item.presetDesc"
+                        class="content-item"
+                        style="overflow-x: auto; overflow-y: hidden"
                     >
-                        <template #button>
-                            <div class="custom-button">
-                                {{ item.preset[item.value] }}
-                            </div>
-                        </template>
-                    </van-slider>
-                </div>
+                        {{ item.presetDesc[item.value] }}
+                    </div>
+                    <i
+                        v-if="item.desc"
+                        class="content-item"
+                        style="overflow-x: auto; overflow-y: hidden"
+                        >{{ item.desc }}</i
+                    >
+                </template>
+            </div>
+            <div v-if="box.desc && unfold" class="box-desc">
+                {{ box.desc }}
             </div>
         </div>
     </div>
@@ -49,7 +67,6 @@ export default defineComponent({
         const color = themeColor;
         const titleClick = () => {
             unfold.value = !unfold.value;
-            console.log(unfold);
         };
         const onChange = (item) => {
             store.changeShowButton(item.name, item.preset[item.value]);
@@ -74,62 +91,74 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .set-box {
+    border-radius: 6px;
+    overflow: hidden;
     width: 100%;
-    font-size: 0;
     display: flex;
+    // flex-wrap: wrap;
     .title {
         display: flex;
-        width: 100%;
+        justify-content: space-between;
         align-items: center;
+        width: 100%;
         padding: 10px;
-        border-radius: 6px;
         background: #cccccc88;
         transition: 0.5s;
         font-size: 16px;
         color: #fff;
+        border-radius: 6px;
     }
     .title-unfold {
         flex-direction: column;
         justify-content: center;
-        border-radius: 6px 0 0 6px;
         width: 60px;
-        min-height: 100px;
         transition: 0.5s;
+        border-radius: 0;
     }
-    .content {
+    .right {
         display: none;
         font-size: 14px;
         overflow: hidden;
         flex: 1;
         color: var(--van-white);
-        background: var(--van-primary-color);
-        padding: 10px;
-        &-item {
-            display: flex;
-            align-items: center;
-            padding: 0 10px;
-            .item-slider {
+        .content {
+            background: var(--van-primary-color);
+            padding: 10px;
+            &-item {
+                display: flex;
+                align-items: center;
                 padding: 0 10px;
-                flex: 1;
-            }
-            .custom-button {
-                min-width: 15px;
-                padding: 0 4px;
-                color: #fff;
-                font-size: 10px;
-                line-height: 18px;
-                text-align: center;
-                background-color: var(--van-success-color);
-                border-radius: 30%;
+                margin: 5px 0;
+                :first-child {
+                    padding-right: 10px;
+                }
+                .item-slider {
+                    padding: 0 10px;
+                    flex: 1;
+                }
+                .custom-button {
+                    min-width: 15px;
+                    padding: 0 4px;
+                    color: #fff;
+                    font-size: 10px;
+                    line-height: 18px;
+                    text-align: center;
+                    background-color: #6200ee;
+                    border-radius: 30%;
+                }
             }
         }
+        .box-desc {
+            background: var(--van-success-color);
+            color: #fff;
+            padding: 2px 10px;
+            overflow: auto;
+        }
     }
-    .content-unfold {
-        border-radius: 0 6px 6px 0;
+    .right-unfold {
         white-space: nowrap;
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
     }
 }
 </style>

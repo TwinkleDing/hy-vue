@@ -14,8 +14,7 @@ const useStore = defineStore("storeId", {
             setStore("showButton", this.showButton);
         },
         changeShowButton(name, value) {
-            this.showButton.$el.style[name] = value;
-            console.log(this.showButton);
+            this.showButton.style[name] = value;
         },
     },
 });
