@@ -11,6 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Vuehy"
         android:networkSecurityConfig="@xml/network_security_config"
+        android:configChanges="orientation|navigation|keyboardHidden"
         android:usesCleartextTraffic="true">
         <activity
             android:name=".MainActivity"

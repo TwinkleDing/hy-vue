@@ -17,10 +17,11 @@ const ATTR_LIST = [
             },
             {
                 name: "boxSizing",
-                preset: ["content-box", "border-box"],
+                preset: ["content-box", "border-box", "inherit"],
                 presetDesc: [
                     "默认盒模型，宽高不包含padding、border",
                     "宽高包含padding、border",
+                    "继承",
                 ],
                 value: 0,
                 text: "box-sizing",
@@ -282,30 +283,30 @@ const ATTR_LIST = [
     //             value: 0,
     //             text: "background-color",
     //         },
-            // {
-            //     name: "backgroundImage",
-            //     preset: [`url(${require('./assets/logo.png')})`,"../assets/logo.png"],
-            //     value: 0,
-            //     text: "background-image",
-            // },
-            // {
-            //     name: "backgroundPosition",
-            //     preset: [],
-            //     value: 0,
-            //     text: "background-position",
-            // },
-            // {
-            //     name: "backgroundSize",
-            //     preset: [],
-            //     value: 0,
-            //     text: "background-size",
-            // },
-            // {
-            //     name: "backgroundRepeat",
-            //     preset: [],
-            //     value: 0,
-            //     text: "background-repeat",
-            // },
+    // {
+    //     name: "backgroundImage",
+    //     preset: [`url(${require('./assets/logo.png')})`,"../assets/logo.png"],
+    //     value: 0,
+    //     text: "background-image",
+    // },
+    // {
+    //     name: "backgroundPosition",
+    //     preset: [],
+    //     value: 0,
+    //     text: "background-position",
+    // },
+    // {
+    //     name: "backgroundSize",
+    //     preset: [],
+    //     value: 0,
+    //     text: "background-size",
+    // },
+    // {
+    //     name: "backgroundRepeat",
+    //     preset: [],
+    //     value: 0,
+    //     text: "background-repeat",
+    // },
     //     ],
     // },
 ];
