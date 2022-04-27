@@ -56,7 +56,6 @@
 <script>
 import { defineComponent, ref, onMounted, reactive } from "vue";
 import useStore from "@/store/index.js";
-import { themeColor } from "@/utils/webview";
 export default defineComponent({
     props: ["attr"],
     setup(props) {
@@ -64,7 +63,7 @@ export default defineComponent({
         const box = reactive(props.attr);
         const unfold = ref(false);
         const value = ref(0);
-        const color = themeColor;
+        const color = store.themeColor;
         const titleClick = () => {
             unfold.value = !unfold.value;
         };

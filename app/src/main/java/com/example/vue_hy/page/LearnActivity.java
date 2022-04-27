@@ -1,6 +1,7 @@
 package com.example.vue_hy.page;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,12 +27,16 @@ public class LearnActivity extends CommonActivity {
 
     private String mOrientation;
 
+    private String mRouterPage;
+
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_learn);
         overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
+        Intent intent = getIntent();
+        mRouterPage = intent.getStringExtra("routerPage");
 
         Configuration configuration = this.getResources().getConfiguration(); //获取设置的配置信息
         int ori = configuration.orientation; //获取屏幕方向
@@ -60,19 +65,34 @@ public class LearnActivity extends CommonActivity {
     /**
      * 发送给js的事件，js得主动接收并且去调用
      *
+     * @return 是android
+     */
+    @JavascriptInterface
+    public boolean isAndroid() {
+        return true;
+    }
+
+    /**
      * @return 屏幕方向
      */
     @JavascriptInterface
     public String getOrientation() {
         return mOrientation;
     }
+
     /**
-     * 发送给js的事件，js得主动接收并且去调用
-     *
-     * @return 屏幕方向
+     * @return 主题颜色
      */
     @JavascriptInterface
     public String themeColor() {
         return getResources().getString(R.color.purple_700);
+    }
+
+    /**
+     * @return 主题颜色
+     */
+    @JavascriptInterface
+    public String setRouterPage() {
+        return mRouterPage;
     }
 }

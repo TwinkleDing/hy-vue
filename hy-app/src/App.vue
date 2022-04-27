@@ -1,14 +1,46 @@
 <template>
-    <Learn />
+    <template v-if="!isShow">
+        <van-loading
+            class="loading"
+            :color="store.themeColor"
+            vertical
+            size="60"
+            type="spinner"
+        >
+            加载中...
+        </van-loading>
+        <van-overlay :show="true" />
+    </template>
+    <router-view />
 </template>
 
 <script>
-
-import learn from "./views/learn/index.vue";
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+import useStore from "@/store/index.js";
+import { BASE_CSS } from "@/utils/common.js";
 export default {
     name: "App",
-    components: {
-        Learn: learn
-    }
+    setup() {
+        const store = useStore();
+        const router = useRouter();
+        const isShow = ref(false);
+        if (store.routerPage === BASE_CSS) {
+            router.push("/baseCss");
+            isShow.value = true;
+        }
+        return {
+            store,
+            isShow,
+        };
+    },
 };
 </script>
+
+<style lang="scss" scoped>
+.loading {
+    height: 100%;
+    width: 100%;
+    justify-content: center;
+}
+</style>

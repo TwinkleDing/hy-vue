@@ -63,10 +63,10 @@ export default defineComponent({
     },
     setup() {
         const { proxy } = getCurrentInstance();
-        const getOrientation = orientation;
         const store = useStore();
 
-        const color = themeColor;
+        const getOrientation = ref(store.orientation);
+        const color = ref(store.themeColor);
         const showSize = ref(0);
         const setSize = ref(0);
         const lineSize = ref(0);
@@ -74,7 +74,7 @@ export default defineComponent({
         const attrList = reactive(ATTR_LIST);
 
         const lineStart = (e) => {
-            if (getOrientation === PORTRAIT) {
+            if (getOrientation.value === PORTRAIT) {
                 showSize.value = proxy.$refs.learnShow.clientHeight;
                 setSize.value = proxy.$refs.learnSet.clientHeight;
                 lineSize.value = e.targetTouches[0].clientY;
@@ -85,7 +85,7 @@ export default defineComponent({
             }
         };
         const lineMove = (e) => {
-            if (getOrientation === PORTRAIT) {
+            if (getOrientation.value === PORTRAIT) {
                 let y = e.targetTouches[0].clientY;
                 proxy.$refs.learnShow.style.height =
                     showSize.value + (y - lineSize.value) + "px";
