@@ -1,8 +1,12 @@
 import { PORTRAIT, LANDSCAPE, THEME_COLOR } from "./common";
 import { getThemeColor } from "./utils";
+import store from "../store";
 
 export let isAndroid = false;
-export let orientation = PORTRAIT;
+export let orientation =
+    window.orientation === 180 || window.orientation === 0
+        ? PORTRAIT
+        : LANDSCAPE;
 export let themeColor = THEME_COLOR;
 export let routerPage = "/";
 
@@ -27,5 +31,6 @@ if (window.androidObject) {
             window.orientation === 180 || window.orientation === 0
                 ? PORTRAIT
                 : LANDSCAPE;
+        store.commit("ORIENTATIONCHANGE", orientation);
     });
 }

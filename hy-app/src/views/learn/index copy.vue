@@ -112,7 +112,7 @@ export default defineComponent({
 
         onMounted(() => {
             targetEle.value = proxy.$refs.showButton;
-            store.setShowButton(targetEle);
+            store.SET_SHOW_BUTTON(targetEle);
         });
         return {
             getOrientation,

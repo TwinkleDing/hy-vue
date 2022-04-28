@@ -2,7 +2,9 @@
     <div
         class="learn"
         :class="[
-            getOrientation == 'portrait' ? 'learn-portrait' : 'learn-landscape',
+            store.getters.orientation == 'portrait'
+                ? 'learn-portrait'
+                : 'learn-landscape',
         ]"
     >
         <div ref="learnShow" class="learn-show">
@@ -50,12 +52,12 @@ import {
     ref,
     onMounted,
     reactive,
+    computed,
 } from "vue";
-import { orientation, themeColor } from "@/utils/webview";
 import { PORTRAIT } from "@/utils/common";
 import SetBox from "@components/SetBox.vue";
 import ATTR_LIST from "@/utils/attrList.js";
-import useStore from "@/store/index.js";
+import { useStore } from "vuex";
 
 export default defineComponent({
     components: {
@@ -65,20 +67,27 @@ export default defineComponent({
         const { proxy } = getCurrentInstance();
         const store = useStore();
 
-        const getOrientation = ref(store.orientation);
-        const color = ref(store.themeColor);
+        const color = ref(store.getters.themeColor);
         const showSize = ref(0);
         const setSize = ref(0);
         const lineSize = ref(0);
         const targetEle = ref(null);
         const attrList = reactive(ATTR_LIST);
-
+        const getOrientation = computed(() => {
+            const orientation = store.getters.orientation;
+            console.log(orientation);
+            return orientation;
+        });
         const lineStart = (e) => {
             if (getOrientation.value === PORTRAIT) {
+                proxy.$refs.learnShow.style.width = "100%";
+                proxy.$refs.learnSet.style.width = "100%";
                 showSize.value = proxy.$refs.learnShow.clientHeight;
                 setSize.value = proxy.$refs.learnSet.clientHeight;
                 lineSize.value = e.targetTouches[0].clientY;
             } else {
+                proxy.$refs.learnShow.style.height = "100%";
+                proxy.$refs.learnSet.style.height = "100%";
                 showSize.value = proxy.$refs.learnShow.clientWidth;
                 setSize.value = proxy.$refs.learnSet.clientWidth;
                 lineSize.value = e.targetTouches[0].clientX;
@@ -86,12 +95,16 @@ export default defineComponent({
         };
         const lineMove = (e) => {
             if (getOrientation.value === PORTRAIT) {
+                proxy.$refs.learnShow.style.width = "100%";
+                proxy.$refs.learnSet.style.width = "100%";
                 let y = e.targetTouches[0].clientY;
                 proxy.$refs.learnShow.style.height =
                     showSize.value + (y - lineSize.value) + "px";
                 proxy.$refs.learnSet.style.height =
                     setSize.value - (y - lineSize.value) + "px";
             } else {
+                proxy.$refs.learnShow.style.height = "100%";
+                proxy.$refs.learnSet.style.height = "100%";
                 let y = e.targetTouches[0].clientX;
                 proxy.$refs.learnShow.style.width =
                     showSize.value + (y - lineSize.value) + "px";
@@ -102,9 +115,10 @@ export default defineComponent({
 
         onMounted(() => {
             targetEle.value = proxy.$refs.showButton;
-            store.setShowButton(targetEle);
+            store.commit("SET_SHOW_BUTTON", targetEle);
         });
         return {
+            store,
             getOrientation,
             lineStart,
             lineMove,

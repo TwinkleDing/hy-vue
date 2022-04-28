@@ -55,7 +55,7 @@
 
 <script>
 import { defineComponent, ref, onMounted, reactive } from "vue";
-import useStore from "@/store/index.js";
+import { useStore } from "vuex";
 export default defineComponent({
     props: ["attr"],
     setup(props) {
@@ -63,12 +63,15 @@ export default defineComponent({
         const box = reactive(props.attr);
         const unfold = ref(false);
         const value = ref(0);
-        const color = store.themeColor;
+        const color = store.getters.themeColor;
         const titleClick = () => {
             unfold.value = !unfold.value;
         };
         const onChange = (item) => {
-            store.changeShowButton(item.name, item.preset[item.value]);
+            store.commit("CHANGE_SHOW_BUTTON", {
+                name: item.name,
+                value: item.preset[item.value],
+            });
         };
         onMounted(() => {
             // setTimeout(() => {

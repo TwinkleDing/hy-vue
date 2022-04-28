@@ -11,7 +11,7 @@ const ATTR_LIST = [
             },
             {
                 name: "height",
-                preset: ["44px", "88px", "128", "168px", "328px", "648px"],
+                preset: ["44px", "88px", "128px", "168px", "328px", "648px"],
                 value: 0,
                 text: "height",
             },

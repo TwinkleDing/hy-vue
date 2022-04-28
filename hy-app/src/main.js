@@ -1,14 +1,14 @@
 import { createApp } from "vue";
 import "./css/index.scss";
 import { Button, Tab, Tabs, Slider, Icon, Loading, Overlay } from "vant";
-import { createPinia } from "pinia";
+import store from "./store";
 import router from "./router";
 import App from "./App.vue";
 
 const app = createApp(App);
 
 app.use(router);
-app.use(createPinia());
+app.use(store);
 app.use(Loading);
 app.use(Overlay);
 app.use(Button);

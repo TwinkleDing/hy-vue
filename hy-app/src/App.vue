@@ -2,7 +2,7 @@
     <template v-if="!isShow">
         <van-loading
             class="loading"
-            :color="store.themeColor"
+            :color="store.getters.themeColor"
             vertical
             size="60"
             type="spinner"
@@ -17,7 +17,7 @@
 <script>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import useStore from "@/store/index.js";
+import { useStore } from "vuex";
 import { BASE_CSS } from "@/utils/common.js";
 export default {
     name: "App",
@@ -25,7 +25,7 @@ export default {
         const store = useStore();
         const router = useRouter();
         const isShow = ref(false);
-        if (store.routerPage === BASE_CSS || !store.isAndroid) {
+        if (store.getters.routerPage === BASE_CSS || !store.isAndroid) {
             router.push("/baseCss");
             isShow.value = true;
         }

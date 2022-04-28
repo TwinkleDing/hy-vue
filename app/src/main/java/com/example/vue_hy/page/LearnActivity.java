@@ -56,10 +56,10 @@ public class LearnActivity extends CommonActivity {
         mWebView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
         mWebView.getSettings().setDatabasePath(LearnActivity.this.getApplicationContext().getCacheDir().getAbsolutePath());
         mWebView.addJavascriptInterface(LearnActivity.this, "androidObject");
-//        mWebView.loadUrl("http://10.168.2.237:8006");
+        mWebView.loadUrl("http://10.168.2.237:8006");
         mWebView.getSettings().setAllowFileAccessFromFileURLs(true);
 
-        mWebView.loadUrl("file:///android_asset/index.html");
+//        mWebView.loadUrl("file:///android_asset/index.html");
     }
 
     /**
