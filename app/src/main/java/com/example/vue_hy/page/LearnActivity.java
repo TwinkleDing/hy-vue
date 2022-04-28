@@ -4,15 +4,11 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
 import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
-import android.webkit.ValueCallback;
-import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
-
-import androidx.annotation.NonNull;
+import android.widget.TextView;
 
 import com.example.vue_hy.R;
 import com.example.vue_hy.common.CommonActivity;
@@ -28,6 +24,8 @@ public class LearnActivity extends CommonActivity {
     private String mOrientation;
 
     private String mRouterPage;
+
+    private boolean isLoading = true;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -62,6 +60,7 @@ public class LearnActivity extends CommonActivity {
 //        mWebView.loadUrl("file:///android_asset/index.html");
     }
 
+
     /**
      * 发送给js的事件，js得主动接收并且去调用
      *
@@ -94,5 +93,14 @@ public class LearnActivity extends CommonActivity {
     @JavascriptInterface
     public String setRouterPage() {
         return mRouterPage;
+    }
+
+    /**
+     * @return html加载完成
+     */
+    @JavascriptInterface
+    public void stopLoading() {
+        TextView loading = findViewById(R.id.loading);
+        loading.setVisibility(View.GONE);
     }
 }

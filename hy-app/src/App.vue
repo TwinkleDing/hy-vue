@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { BASE_CSS } from "@/utils/common.js";
@@ -26,10 +26,15 @@ export default {
         const store = useStore();
         const router = useRouter();
         const isShow = ref(false);
-        if (store.getters.routerPage === BASE_CSS || !store.isAndroid) {
+        if (store.getters.isAndroid && store.getters.routerPage === BASE_CSS) {
             router.push("/baseCss");
-            isShow.value = true;
         }
+
+        onMounted(() => {
+            isShow.value = true;
+            window.androidObject.stopLoading();
+        });
+
         return {
             store,
             isShow,

@@ -11,6 +11,14 @@ const router = new createRouter({
                     /* webpackChunkName: 'dashboard' */ "@/views/learn/baseCss.vue"
                 ),
         },
+        {
+            path: "/baseHtml",
+            name: "baseHtml",
+            component: () =>
+                import(
+                    /* webpackChunkName: 'dashboard' */ "@/views/learn/baseHtml.vue"
+                ),
+        },
     ],
 });
 
