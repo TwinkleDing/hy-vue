@@ -16,7 +16,6 @@ if (window.androidObject) {
     themeColor = getThemeColor(window.androidObject.themeColor());
     // 获取跳转的页面
     routerPage = window.androidObject.setRouterPage();
-
 } else {
     window.addEventListener("orientationchange", function (event) {
         orientation = getOrientation();

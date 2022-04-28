@@ -32,7 +32,9 @@ export default {
 
         onMounted(() => {
             isShow.value = true;
-            window.androidObject.stopLoading();
+            if (window.androidObject) {
+                window.androidObject.stopLoading();
+            }
         });
 
         return {

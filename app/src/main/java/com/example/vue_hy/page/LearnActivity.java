@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
@@ -24,8 +25,6 @@ public class LearnActivity extends CommonActivity {
     private String mOrientation;
 
     private String mRouterPage;
-
-    private boolean isLoading = true;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -53,11 +52,12 @@ public class LearnActivity extends CommonActivity {
         mWebView.getSettings().setDatabaseEnabled(true);
         mWebView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
         mWebView.getSettings().setDatabasePath(LearnActivity.this.getApplicationContext().getCacheDir().getAbsolutePath());
+        // js调用android的设置
         mWebView.addJavascriptInterface(LearnActivity.this, "androidObject");
-        mWebView.loadUrl("http://10.168.2.237:8006");
         mWebView.getSettings().setAllowFileAccessFromFileURLs(true);
 
-//        mWebView.loadUrl("file:///android_asset/index.html");
+//        mWebView.loadUrl("http://10.168.2.237:8006");
+        mWebView.loadUrl("file:///android_asset/index.html");
     }
 
 
@@ -96,11 +96,16 @@ public class LearnActivity extends CommonActivity {
     }
 
     /**
-     * @return html加载完成
+     * @return html加载完成操作
      */
     @JavascriptInterface
     public void stopLoading() {
-        TextView loading = findViewById(R.id.loading);
-        loading.setVisibility(View.GONE);
+        LearnActivity.this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                TextView loading = findViewById(R.id.loading);
+                loading.setVisibility(View.GONE);
+            }
+        });
     }
 }

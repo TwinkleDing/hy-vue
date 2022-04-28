@@ -4,6 +4,10 @@ const router = new createRouter({
     history: createWebHashHistory(),
     routes: [
         {
+            path: "/",
+            redirect: "/baseCss",
+        },
+        {
             path: "/baseCss",
             name: "baseCss",
             component: () =>
