@@ -26,7 +26,7 @@ public class MainActivity extends CommonActivity {
         mBaseCssButton = findViewById(R.id.learn_base_css);
         Bundle bundle = new Bundle();
         mBaseCssButton.setOnClickListener(v -> {
-            bundle.putString("routerPage","baseCss");
+            bundle.putString("routerPage","BASE_CSS");
             Intent mainIntent = new Intent(MainActivity.this, LearnActivity.class);
             mainIntent.putExtras(bundle);
             startActivity(mainIntent);

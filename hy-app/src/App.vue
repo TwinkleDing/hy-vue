@@ -1,15 +1,16 @@
 <template>
     <template v-if="!isShow">
-        <van-loading
-            class="loading"
-            :color="store.getters.themeColor"
-            vertical
-            size="60"
-            type="spinner"
-        >
-            加载中...
-        </van-loading>
-        <van-overlay :show="true" />
+        <van-overlay :show="true">
+            <van-loading
+                class="loading"
+                :color="store.getters.themeColor"
+                vertical
+                size="60"
+                type="spinner"
+            >
+                加载中...
+            </van-loading>
+        </van-overlay>
     </template>
     <router-view />
 </template>

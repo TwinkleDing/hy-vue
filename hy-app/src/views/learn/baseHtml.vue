@@ -2,18 +2,29 @@
     <div
         class="learn"
         :class="[
-            getOrientation == 'portrait' ? 'learn-portrait' : 'learn-landscape',
+            store.getters.orientation == 'portrait'
+                ? 'learn-portrait'
+                : 'learn-landscape',
         ]"
     >
         <div ref="learnShow" class="learn-show">
-            <van-button
-                ref="showButton"
-                type="primary"
-                round
-                @touchstart="divStart"
-                @touchmove="divMove"
-                >展示按钮</van-button
-            >
+            <div class="learn-show-box1">
+                <div style="position: absolute; left: 0; top: -24px">
+                    祖父元素
+                </div>
+                <div class="learn-show-box2">
+                    <div style="position: absolute; left: 50px; top: 28px">
+                        父元素
+                    </div>
+                    <div
+                        ref="showButton"
+                        class="learn-show-box3"
+                        :style="{ backgroundColor: color }"
+                    >
+                        展示按钮
+                    </div>
+                </div>
+            </div>
         </div>
         <span
             ref="learnLine"
@@ -22,12 +33,14 @@
             @touchmove="lineMove"
         ></span>
         <div ref="learnSet" class="learn-set">
-            <set-box
-                class="set-box"
-                v-for="(item, index) in attrList"
-                :attr="item"
-                :key="index"
-            />
+            <div class="overflow-y">
+                <set-box
+                    class="set-box"
+                    v-for="(item, index) in attrList"
+                    :attr="item"
+                    :key="index"
+                />
+            </div>
         </div>
     </div>
 </template>
@@ -39,12 +52,12 @@ import {
     ref,
     onMounted,
     reactive,
+    computed,
 } from "vue";
-import { orientation } from "@/utils/webview";
 import { PORTRAIT } from "@/utils/common";
 import SetBox from "@components/SetBox.vue";
 import ATTR_LIST from "@/utils/attrList.js";
-import useStore from "@/store/index.js";
+import { useStore } from "vuex";
 
 export default defineComponent({
     components: {
@@ -52,56 +65,46 @@ export default defineComponent({
     },
     setup() {
         const { proxy } = getCurrentInstance();
-        const getOrientation = orientation;
         const store = useStore();
 
+        const color = ref(store.getters.themeColor);
         const showSize = ref(0);
         const setSize = ref(0);
         const lineSize = ref(0);
-        const divX = ref(0);
-        const divY = ref(0);
         const targetEle = ref(null);
         const attrList = reactive(ATTR_LIST);
-
-        const divStart = (e) => {
-            divX.value = e.targetTouches[0].clientX - e.target.offsetLeft;
-            divY.value = e.targetTouches[0].clientY - e.target.offsetTop;
-        };
-        const divMove = (e) => {
-            let x = e.targetTouches[0].clientX - divX.value;
-            let y = e.targetTouches[0].clientY - divY.value;
-            if (
-                x > 0 &&
-                x + e.target.clientWidth < proxy.$refs.learnShow.offsetWidth
-            ) {
-                e.target.style.left = x + "px";
-            }
-            if (
-                y > 0 &&
-                y + e.target.clientHeight < proxy.$refs.learnShow.offsetHeight
-            ) {
-                e.target.style.top = y + "px";
-            }
-        };
+        const getOrientation = computed(() => {
+            const orientation = store.getters.orientation;
+            console.log(orientation);
+            return orientation;
+        });
         const lineStart = (e) => {
-            if (getOrientation === PORTRAIT) {
+            if (getOrientation.value === PORTRAIT) {
+                proxy.$refs.learnShow.style.width = "100%";
+                proxy.$refs.learnSet.style.width = "100%";
                 showSize.value = proxy.$refs.learnShow.clientHeight;
                 setSize.value = proxy.$refs.learnSet.clientHeight;
                 lineSize.value = e.targetTouches[0].clientY;
             } else {
+                proxy.$refs.learnShow.style.height = "100%";
+                proxy.$refs.learnSet.style.height = "100%";
                 showSize.value = proxy.$refs.learnShow.clientWidth;
                 setSize.value = proxy.$refs.learnSet.clientWidth;
                 lineSize.value = e.targetTouches[0].clientX;
             }
         };
         const lineMove = (e) => {
-            if (getOrientation === PORTRAIT) {
+            if (getOrientation.value === PORTRAIT) {
+                proxy.$refs.learnShow.style.width = "100%";
+                proxy.$refs.learnSet.style.width = "100%";
                 let y = e.targetTouches[0].clientY;
                 proxy.$refs.learnShow.style.height =
                     showSize.value + (y - lineSize.value) + "px";
                 proxy.$refs.learnSet.style.height =
                     setSize.value - (y - lineSize.value) + "px";
             } else {
+                proxy.$refs.learnShow.style.height = "100%";
+                proxy.$refs.learnSet.style.height = "100%";
                 let y = e.targetTouches[0].clientX;
                 proxy.$refs.learnShow.style.width =
                     showSize.value + (y - lineSize.value) + "px";
@@ -112,15 +115,15 @@ export default defineComponent({
 
         onMounted(() => {
             targetEle.value = proxy.$refs.showButton;
-            store.SET_SHOW_BUTTON(targetEle);
+            store.commit("SET_SHOW_BUTTON", targetEle);
         });
         return {
+            store,
             getOrientation,
-            divStart,
-            divMove,
             lineStart,
             lineMove,
             attrList,
+            color,
         };
     },
 });
@@ -138,27 +141,42 @@ export default defineComponent({
         height: 100%;
         overflow: hidden;
     }
-    .learn-show {
+    &-show {
         position: relative;
-        button {
-            position: absolute;
-            top: 40%;
-            left: 40%;
+        &-box1 {
+            width: 300px;
+            height: 300px;
+            border: 2px solid #ac0;
+            position: relative;
+            top: 50px;
+            left: 50px;
+        }
+        &-box2 {
+            width: 200px;
+            height: 200px;
+            border: 2px solid #ac0;
+            margin: 50px;
+        }
+        &-box3 {
+            width: 80px;
+            height: 80px;
+            color: #fff;
+        }
+    }
+    .learn-set {
+        box-sizing: border-box;
+        padding: 20px;
+        .overflow-y {
+            height: 100%;
+            overflow-y: auto;
         }
     }
     &-portrait {
         flex-direction: column;
         .learn-show {
             min-height: 200px;
-            button {
-                position: absolute;
-                top: 40%;
-                left: 40%;
-            }
         }
         .learn-set {
-            box-sizing: border-box;
-            padding: 20px;
             min-height: 200px;
         }
         .learn-line {
@@ -172,8 +190,6 @@ export default defineComponent({
             min-width: 200px;
         }
         .learn-set {
-            box-sizing: border-box;
-            padding: 20px;
             min-width: 200px;
         }
         .learn-line {
