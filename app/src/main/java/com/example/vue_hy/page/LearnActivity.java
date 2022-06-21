@@ -4,10 +4,11 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
+import android.webkit.ValueCallback;
 import android.webkit.WebView;
 import android.widget.TextView;
 
@@ -25,6 +26,8 @@ public class LearnActivity extends CommonActivity {
     private String mOrientation;
 
     private String mRouterPage;
+
+    private TextView mLoading;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -58,6 +61,21 @@ public class LearnActivity extends CommonActivity {
 
 //        mWebView.loadUrl("http://10.168.2.237:8006");
         mWebView.loadUrl("file:///android_asset/index.html");
+
+        mLoading = findViewById(R.id.loading);
+        mLoading.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String jsonParams = "android传递到js";
+                String method = "jsMethod(" + jsonParams + ")";//拼接参数，就可以把数据传递给js
+                mWebView.evaluateJavascript(method, new ValueCallback<String>() {
+                    @Override
+                    public void onReceiveValue(String value) {
+                        Log.i("js返回的数据", "js返回的数据" + value);
+                    }
+                });
+            }
+        });
     }
 
 
@@ -103,8 +121,7 @@ public class LearnActivity extends CommonActivity {
         LearnActivity.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                TextView loading = findViewById(R.id.loading);
-                loading.setVisibility(View.GONE);
+                mLoading.setVisibility(View.GONE);
             }
         });
     }
